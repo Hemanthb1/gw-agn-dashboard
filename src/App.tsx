@@ -53,7 +53,7 @@ export default function App() {
   const { events: liveEvents, latest, connected } = useEventStream()
 
   useEffect(() => {
-  fetch("http://localhost:8000/events")
+  fetch(import.meta.env.VITE_API_URL ?? "http://localhost:8000/events")
     .then(r => r.json())
     .then(data => {
       setResults(data)
