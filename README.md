@@ -6,7 +6,7 @@ A real-time dashboard for gravitational wave follow-up, crossmatching LIGO/Virgo
 
 ## What it does
 
-When LIGO detects a gravitational wave event, one of the leading candidate sources is an AGN (Active Galactic Nucleus) — a supermassive black hole system that could produce both GW and electromagnetic emission. This tool automatically:
+When LIGO detects a gravitational wave event, one of the leading candidate sources is an AGN (Active Galactic Nucleus) — a supermassive black hole system that could contain merging black holes that could emit in both GW and electromagnetic emission. This tool automatically:
 
 1. Downloads GW skymaps from GraceDB
 2. Queries the ALeRCE broker for ZTF transients within the GW localization region
