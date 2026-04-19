@@ -134,6 +134,7 @@ export default function LightCurve({ oid, gwMjd }: LightCurveProps) {
             ]}
         label={{ value: "MJD", position: "insideBottom", offset: -10 }}
             tick={{ fontSize: 11, fill: "gray" }}
+            tickFormatter={(v) => Math.round(v).toString()}
         />
 
           <YAxis
@@ -142,6 +143,7 @@ export default function LightCurve({ oid, gwMjd }: LightCurveProps) {
             domain={[magMax + magPad, magMin - magPad]}
             label={{ value: "Magnitude", angle: -90, position: "insideLeft" }}
             tick={{ fontSize: 11, fill: "gray" }}
+            tickFormatter={(v) => Number(v).toFixed(2)}
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend verticalAlign="top" height={28} />
