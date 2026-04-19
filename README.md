@@ -1,73 +1,55 @@
-# React + TypeScript + Vite
+# GW-AGN Watcher Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A real-time dashboard for gravitational wave follow-up, crossmatching LIGO/Virgo GW events with AGN candidates from ZTF/ALeRCE.
 
-Currently, two official plugins are available:
+**Live demo:** https://gw-agn-dashboard.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## What it does
 
-## React Compiler
+When LIGO detects a gravitational wave event, one of the leading candidate sources is an AGN (Active Galactic Nucleus) — a supermassive black hole system that could produce both GW and electromagnetic emission. This tool automatically:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Downloads GW skymaps from GraceDB
+2. Queries the ALeRCE broker for ZTF transients within the GW localization region
+3. Crossmatches candidates against the Milliquas AGN catalog
+4. Ranks candidates by overlap probability, redshift, and light curve behavior
+5. Displays results in an interactive dashboard with live ZTF light curves
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Live alert dashboard with severity ranking
+- ZTF g-band and r-band light curves with GW trigger time marker
+- Sky map showing AGN candidate positions
+- Filter by severity, probability threshold, and AGN catalog
+- Real-time event stream simulation
+- Clickable detail view per candidate
+- Settings panel for pipeline configuration
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Pipeline:** Python — `ligo.skymap`, `astropy`, ALeRCE broker, Milliquas catalog
+- **Backend:** FastAPI
+- **Frontend:** React + TypeScript, Recharts, Vite
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Run locally
+
+```bash
+# Clone the repo
+git clone https://github.com/Hemanthb1/gw-agn-dashboard.git
+cd gw-agn-dashboard
+
+# Install dependencies
+npm install
+
+# Start the dev server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The dashboard reads from `public/final_candidates.csv` — replace this with output from the [gw_agn_watcher](https://github.com/Hemanthb1/GW_AGN_watcher) pipeline.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Pipeline
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The Python pipeline lives at [github.com/Hemanthb1/GW_AGN_watcher](https://github.com/Hemanthb1/GW_AGN_watcher).
+
+## Author
+
+Hemanth Kumar — hemanth.bommireddy195@gmail.com
