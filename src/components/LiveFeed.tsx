@@ -98,8 +98,21 @@ useEffect(() => {
               {event.gw_event.graceid}
             </span>
             <span style={{ color: "#888" }}>
-              {event.agn_candidate.name}
+            {event.agn_candidate.name}
             </span>
+            {event.agn_candidate.catalog === "Einstein Probe" && (
+            <span style={{
+             background: "#FAEEDA",
+            color: "#633806",
+            padding: "2px 6px",
+            borderRadius: 4,
+            fontSize: 11,
+            fontWeight: 500,
+            flexShrink: 0,
+            }}>
+                EP
+            </span>
+            )}
             <span style={{ color: "#1D9E75", marginLeft: "auto", flexShrink: 0 }}>
               {(event.probability_overlap * 100).toFixed(0)}%
             </span>
