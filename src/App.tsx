@@ -53,10 +53,47 @@ export default function App() {
   const { events: liveEvents, latest, connected } = useEventStream()
 
   useEffect(() => {
-  fetch(import.meta.env.VITE_API_URL ?? "http://localhost:8000/events")
-    .then(r => r.json())
-    .then(data => {
-      setResults(data)
+  fetch("/final_candidates.csv")
+    .then(r => r.text())
+    .then(text => {
+      const lines = text.trim().split("\n")
+      const headers = lines[0].split(",")
+      const rows = lines.slice(1).map(line => {
+        const values = line.split(",")
+        return Object.fromEntries(headers.map((h, i) => [h, values[i]]))
+      })
+      const results = rows.map((row: any) => ({
+        id: crypto.randomUUID(),
+        gw_event: {
+          id: crypto.randomUUID(),
+          graceid: row.event_id ?? "unknown",
+          far: 0,
+          classification: {},
+          distanceMean: 0,
+          distanceStd: 0,
+          skymap_url: row.event_url ?? "",
+          mjd_obs: parseFloat(row.mjd_obs) || undefined,
+          created_at: new Date().toISOString(),
+        },
+        agn_candidate: {
+          id: crypto.randomUUID(),
+          name: row.oid_x ?? "unknown",
+          ra: parseFloat(row.meanra) || 0,
+          dec: parseFloat(row.meandec) || 0,
+          redshift: 0,
+          magnitude: parseFloat(row.magpsf) || 0,
+          catalog: "ALeRCE",
+        },
+        probability_overlap: parseFloat(row.probability) || 0,
+        angular_separation: parseFloat(row.distpsnr1) || 0,
+        severity: parseFloat(row.probability) >= 0.9 ? "critical"
+          : parseFloat(row.probability) >= 0.75 ? "high"
+          : parseFloat(row.probability) >= 0.5 ? "medium" : "low",
+        flagged: parseFloat(row.probability) >= 0.75,
+        created_at: new Date().toISOString(),
+      }))
+      setResults(results as any)
+      setFiltered(results as any)
       setLoading(false)
     })
     .catch(err => {
@@ -64,7 +101,6 @@ export default function App() {
       setLoading(false)
     })
 }, [])
-
   useEffect(() => {
     setFiltered(applyFilters(results, filters, config))
   }, [results, filters, config])
