@@ -99,7 +99,7 @@ export default function DetailView({ result, onBack }: DetailViewProps) {
 
       <Section title="Crossmatch result">
         <Row label="Overlap probability" value={`${(result.probability_overlap * 100).toFixed(0)}%`} />
-        <Row label="Angular separation" value={`${result.angular_separation.toFixed(1)} arcmin`} />
+        <Row label="Angular separation" value={`${result.angular_separation.toFixed(1)} arcsec`} />
         <Row label="Detected at" value={new Date(result.created_at).toLocaleString()} />
       </Section>
 
