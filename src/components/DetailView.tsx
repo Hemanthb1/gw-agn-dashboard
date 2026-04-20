@@ -122,11 +122,13 @@ export default function DetailView({ result, onBack }: DetailViewProps) {
       </Section>
 
       <Section title="AGN candidate">
-        <Row label="Name" value={agn_candidate.name} />
+        <Row label="ZTF ID" value={agn_candidate.name} />
+        <Row label="Milliquas name" value={agn_candidate.agn_name ?? "—"} />
         <Row label="RA" value={`${agn_candidate.ra.toFixed(4)}°`} />
         <Row label="Dec" value={`${agn_candidate.dec.toFixed(4)}°`} />
-        <Row label="Redshift" value={agn_candidate.redshift.toFixed(3)} />
-        <Row label="Magnitude" value={agn_candidate.magnitude.toFixed(1)} />
+        <Row label="Redshift" value={agn_candidate.redshift > 0 ? agn_candidate.redshift.toFixed(3) : "—"} />
+        <Row label="Magnitude (g)" value={agn_candidate.magnitude.toFixed(2)} />
+        <Row label="Milliquas separation" value={agn_candidate.agnsep ? `${(agn_candidate.agnsep * 3600).toFixed(1)}"` : "—"} />
         <Row label="Catalog" value={agn_candidate.catalog} />
       </Section>
       <LightCurve oid={agn_candidate.name} gwMjd={gw_event.mjd_obs ?? 0} />

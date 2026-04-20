@@ -25,6 +25,8 @@ export interface AGNCandidate {
   redshift: number
   magnitude: number
   catalog: string
+  agn_name?: string
+  agnsep?: number
 }
 
 export interface CrossmatchResult {

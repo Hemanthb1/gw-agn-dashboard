@@ -15,7 +15,7 @@ import type { WatcherConfig } from "./components/SettingsPanel"
 const defaultConfig: WatcherConfig = {
   probabilityThreshold: 0.5,
   maxDistance: 500,
-  catalogs: ["ALeRCE"],
+  catalogs: ["ALeRCE", "ALeRCE/Milliquas"],
   alertEmail: "",
 }
 
@@ -77,12 +77,14 @@ export default function App() {
         },
         agn_candidate: {
           id: crypto.randomUUID(),
-          name: row.oid_x ?? "unknown",
+          name: row.oid ?? row.oid_x ?? "unknown",
           ra: parseFloat(row.meanra) || 0,
           dec: parseFloat(row.meandec) || 0,
-          redshift: 0,
+          redshift: parseFloat(row.z) || 0,
           magnitude: parseFloat(row.magpsf) || 0,
-          catalog: "ALeRCE",
+          catalog: "ALeRCE/Milliquas",
+          agn_name: row.agn ?? null,
+          agnsep: parseFloat(row.agnsep) || null,
         },
         probability_overlap: parseFloat(row.probability) || 0,
         angular_separation: parseFloat(row.distpsnr1) || 0,
