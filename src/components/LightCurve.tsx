@@ -51,9 +51,9 @@ export default function LightCurve({ oid, gwMjd }: LightCurveProps) {
   const [rData, setRData] = useState<DataPoint[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [showGWLine, setShowGWLine] = useState(true)
 
   useEffect(() => {
-    console.log("Fetching light curve for:", oid)
     setLoading(true)
     setError(null)
     fetch(`https://api.alerce.online/ztf/v1/objects/${oid}/lightcurve`)
@@ -111,17 +111,32 @@ export default function LightCurve({ oid, gwMjd }: LightCurveProps) {
         marginBottom: 12,
       }}>
         <h2 style={{ fontSize: 15, fontWeight: 500, margin: 0 }}>ZTF light curve</h2>
-        <a
-          href={"https://alerce.online/object/" + oid}
-          target="_blank"
-          rel="noreferrer"
-          style={{ fontSize: 12, color: "#378ADD"
-      }}>
-          View on ALeRCE
-        </a>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <label style={{ fontSize: 12, color: "gray", display: "flex", alignItems: "center", gap: 6 }}>
+            <input
+              type="checkbox"
+              checked={showGWLine}
+              onChange={e => setShowGWLine(e.target.checked)}
+            />
+            GW trigger time
+          </label>
+          <a
+            href={"https://alerce.online/object/" + oid}
+            target="_blank"
+            rel="noreferrer"
+            style={{ fontSize: 12, color: "#378ADD" }}
+          >
+            View on ALeRCE
+          </a>
+        </div>
       </div>
       <div style={{ fontSize: 12, color: "gray", marginBottom: 12 }}>
         {oid} · {gData.length + rData.length} detections
+        {gwMjd && gData.length + rData.length > 0 && (
+         <span style={{ marginLeft: 12, color: "#7F77DD" }}>
+         First detection: +{(Math.min(...[...gData, ...rData].map(d => d.mjd)) - gwMjd).toFixed(1)} days after GW event
+        </span>
+        )}
       </div>
       <ResponsiveContainer width="100%" height={280}>
         <ScatterChart margin={{ top: 10, right: 20, bottom: 20, left: 20 }}>
@@ -129,14 +144,13 @@ export default function LightCurve({ oid, gwMjd }: LightCurveProps) {
             dataKey="mjd"
             type="number"
             domain={[
-            Math.min(gwMjd, ...[...gData, ...rData].map(d => d.mjd)) - 10,
-            Math.max(...[...gData, ...rData].map(d => d.mjd)) + 10
-            ]}
-        label={{ value: "MJD", position: "insideBottom", offset: -10 }}
+            Math.min(...[...gData, ...rData].map(d => d.mjd)) - 5,
+            Math.max(...[...gData, ...rData].map(d => d.mjd)) + 5
+             ]}    
+            label={{ value: "MJD", position: "insideBottom", offset: -10 }}
             tick={{ fontSize: 11, fill: "gray" }}
             tickFormatter={(v) => Math.round(v).toString()}
-        />
-
+          />
           <YAxis
             dataKey="mag"
             type="number"
@@ -148,7 +162,14 @@ export default function LightCurve({ oid, gwMjd }: LightCurveProps) {
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend verticalAlign="top" height={28} />
-          <ReferenceLine x={gwMjd} stroke="#7F77DD" strokeDasharray="4 4" />
+          {showGWLine && gwMjd && (
+            <ReferenceLine
+              x={gwMjd}
+              stroke="#7F77DD"
+              strokeDasharray="4 4"
+              label={{ value: "GW", fill: "#7F77DD", fontSize: 11 }}
+            />
+          )}
           <Scatter
             name="g-band"
             data={gData}
