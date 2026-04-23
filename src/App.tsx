@@ -11,6 +11,7 @@ import { useEventStream } from "./hooks/useEventStream"
 import type { CrossmatchResult } from "./types/events"
 import type { FilterState } from "./components/FilterControls"
 import type { WatcherConfig } from "./components/SettingsPanel"
+import SkymapOverlay from "./components/SkymapOverlay"
 
 const defaultConfig: WatcherConfig = {
   probabilityThreshold: 0.5,
@@ -146,6 +147,7 @@ export default function App() {
       <StatsSummary results={results} />
       <LiveFeed events={liveEvents} connected={connected} />
       <SkyMap results={filtered} />
+      <SkymapOverlay results={results} />
       <FilterControls onFilterChange={setFilters} />
       <AlertTable results={filtered} onSelect={setSelected} />
     </div>
