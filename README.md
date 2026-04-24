@@ -44,7 +44,7 @@ npm install
 npm run dev
 ```
 
-The dashboard reads from `public/final_candidates.csv` — replace this with output from the [gw_agn_watcher](https://github.com/Hemanthb1/GW_AGN_watcher) pipeline.
+The dashboard reads from `public/final_candidates.csv` and `public/skymaps.csv` — replace this with outputs from the [gw_agn_watcher](https://github.com/Hemanthb1/GW_AGN_watcher) pipeline.
 
 ## Pipeline
 
