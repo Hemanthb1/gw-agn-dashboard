@@ -20,6 +20,7 @@ const defaultConfig: WatcherConfig = {
   alertEmail: "",
 }
 
+
 function applyFilters(results: CrossmatchResult[], filters: FilterState, config: WatcherConfig): CrossmatchResult[] {
   let filtered = [...results]
   if (filters.severity !== "all") filtered = filtered.filter(r => r.severity === filters.severity)
@@ -27,13 +28,16 @@ function applyFilters(results: CrossmatchResult[], filters: FilterState, config:
   filtered = filtered.filter(r => r.probability_overlap >= config.probabilityThreshold)
   filtered = filtered.filter(r => r.gw_event.distanceMean <= config.maxDistance)
   filtered = filtered.filter(r => config.catalogs.includes(r.agn_candidate.catalog))
+  const severityOrder: Record<string, number> = { low: 0, medium: 1, high: 2, critical: 3 }
   filtered.sort((a, b) => {
     let diff = 0
-    if (filters.sortBy === "probability") diff = a.probability_overlap - b.probability_overlap
+    if (filters.sortBy === "severity") diff = severityOrder[a.severity] - severityOrder[b.severity]
+    if (filters.sortBy === "ndet") diff = (a.agn_candidate.ndet ?? 0) - (b.agn_candidate.ndet ?? 0)
     if (filters.sortBy === "separation") diff = a.angular_separation - b.angular_separation
     if (filters.sortBy === "date") diff = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-    return filters.sortDir === "desc" ? -diff : diff
-  })
+  return filters.sortDir === "desc" ? -diff : diff
+})
+
   return filtered
 }
 
@@ -43,11 +47,11 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [config, setConfig] = useState<WatcherConfig>(defaultConfig)
   const [filters, setFilters] = useState<FilterState>({
-    severity: "all",
-    flaggedOnly: false,
-    sortBy: "probability",
-    sortDir: "desc",
-  })
+  severity: "all",
+  flaggedOnly: false,
+  sortBy: "severity",
+  sortDir: "desc",
+})
   const [showSettings, setShowSettings] = useState(false)
   const [selected, setSelected] = useState<CrossmatchResult | null>(null)
 
@@ -86,13 +90,28 @@ export default function App() {
           catalog: "ALeRCE/Milliquas",
           agn_name: row.agn ?? null,
           agnsep: parseFloat(row.agnsep) || null,
+          ndet: parseInt(row.ndet) || undefined,
+
+          
         },
         probability_overlap: parseFloat(row.probability) || 0,
         angular_separation: parseFloat(row.distpsnr1) || 0,
-        severity: parseFloat(row.probability) >= 0.9 ? "critical"
-          : parseFloat(row.probability) >= 0.75 ? "high"
-          : parseFloat(row.probability) >= 0.5 ? "medium" : "low",
-        flagged: parseFloat(row.probability) >= 0.75,
+        ...((() => {
+        const prob = parseFloat(row.probability) || 0
+        const ndet = parseInt(row.ndet) || 0
+        const firstmjd = parseFloat(row.firstmjd) || 0
+        const mjd_obs = parseFloat(row.mjd_obs) || 0
+        const days_after = firstmjd - mjd_obs
+        const ndet_score = Math.min(ndet / 20, 1)
+        const timing_score = Math.max(0, 1 - days_after / 365)
+        const score = (prob * 0.4) + (ndet_score * 0.3) + (timing_score * 0.3)
+  return {
+    severity: score >= 0.8 ? "critical"
+      : score >= 0.6 ? "high"
+      : score >= 0.4 ? "medium" : "low",
+    flagged: score >= 0.6,
+  }
+})()),
         created_at: new Date().toISOString(),
       }))
       setResults(results as any)

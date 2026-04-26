@@ -65,7 +65,7 @@ export default function AlertTable({ results, onSelect }: AlertTableProps) {
             <th style={{ padding: "8px 12px" }}>Probability</th>
             <th style={{ padding: "8px 12px" }}>Separation</th>
             <th style={{ padding: "8px 12px" }}>Severity</th>
-            <th style={{ padding: "8px 12px" }}>Flagged</th>
+            <th style={{ padding: "8px 12px" }}>Detections</th>
           </tr>
         </thead>
         <tbody>
@@ -83,7 +83,7 @@ export default function AlertTable({ results, onSelect }: AlertTableProps) {
     <td style={{ padding: "8px 12px" }}>{(r.probability_overlap * 100).toFixed(0)}%</td>
     <td style={{ padding: "8px 12px" }}>{r.angular_separation.toFixed(1)}"</td>
     <td style={{ padding: "8px 12px" }}><SeverityBadge severity={r.severity} /></td>
-    <td style={{ padding: "8px 12px" }}>{r.flagged ? "Yes" : "—"}</td>
+    <td style={{ padding: "8px 12px" }}>{r.agn_candidate.ndet ?? "—"}</td>
     </tr>
       ))}
         </tbody>

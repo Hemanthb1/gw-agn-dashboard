@@ -4,6 +4,8 @@ import LightCurve from "./LightCurve"
 interface DetailViewProps {
   result: CrossmatchResult
   onBack: () => void
+  allResults?: CrossmatchResult[]
+  onSelect?: (result: CrossmatchResult) => void
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
@@ -21,7 +23,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   )
 }
 
-function Row({ label, value }: { label: string; value: string | number }) {
+function Row({ label, value }: { label: string; value: string | number | null | undefined }) {
+  if (value === null || value === undefined) return null
   return (
     <div style={{
       display: "flex",
@@ -50,9 +53,13 @@ const severityBg: Record<string, string> = {
   critical: "#FCEBEB",
 }
 
-export default function DetailView({ result, onBack }: DetailViewProps) {
+export default function DetailView({ result, onBack, allResults = [], onSelect }: DetailViewProps) {
   const { gw_event, agn_candidate } = result
   const far_per_year = (gw_event.far * 3.15e7).toFixed(2)
+
+  const siblings = allResults.filter(
+    r => r.gw_event.graceid === result.gw_event.graceid && r.id !== result.id
+  )
 
   return (
     <div style={{ padding: "24px" }}>
@@ -65,11 +72,37 @@ export default function DetailView({ result, onBack }: DetailViewProps) {
           padding: "6px 14px",
           fontSize: 13,
           cursor: "pointer",
-          marginBottom: 20,
+          marginBottom: 16,
         }}
       >
         ← Back to dashboard
       </button>
+
+      {siblings.length > 0 && (
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 12, color: "gray", marginBottom: 8 }}>
+            Other candidates for {gw_event.graceid}:
+          </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {siblings.map(r => (
+              <button
+                key={r.id}
+                onClick={() => onSelect?.(r)}
+                style={{
+                  padding: "4px 12px",
+                  borderRadius: 6,
+                  border: "0.5px solid #ccc",
+                  background: "none",
+                  fontSize: 12,
+                  cursor: "pointer",
+                }}
+              >
+                {r.agn_candidate.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
         <h1 style={{ margin: 0, fontSize: 22 }}>{gw_event.graceid} × {agn_candidate.name}</h1>
@@ -131,8 +164,8 @@ export default function DetailView({ result, onBack }: DetailViewProps) {
         <Row label="Milliquas separation" value={agn_candidate.agnsep ? `${(agn_candidate.agnsep * 3600).toFixed(1)}"` : "—"} />
         <Row label="Catalog" value={agn_candidate.catalog} />
       </Section>
+
       <LightCurve oid={agn_candidate.name} gwMjd={gw_event.mjd_obs ?? 0} />
-    
     </div>
   )
 }

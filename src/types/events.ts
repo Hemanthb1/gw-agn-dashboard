@@ -27,6 +27,7 @@ export interface AGNCandidate {
   catalog: string
   agn_name?: string
   agnsep?: number
+  ndet?: number
 }
 
 export interface CrossmatchResult {

@@ -4,7 +4,7 @@ import type { Severity } from "../types/events"
 export interface FilterState {
   severity: Severity | "all"
   flaggedOnly: boolean
-  sortBy: "probability" | "separation" | "date"
+  sortBy: "ndet" | "severity" | "separation" | "date"
   sortDir: "asc" | "desc"
 }
 
@@ -18,7 +18,7 @@ type FilterAction =
 const initialState: FilterState = {
   severity: "all",
   flaggedOnly: false,
-  sortBy: "probability",
+  sortBy: "severity",
   sortDir: "desc",
 }
 
@@ -94,7 +94,8 @@ export default function FilterControls({ onFilterChange }: FilterControlsProps) 
           value={state.sortBy}
           onChange={e => handle({ type: "SET_SORT", payload: e.target.value as FilterState["sortBy"] })}
         >
-          <option value="probability">Probability</option>
+          <option value="severity">Severity</option>
+          <option value="ndet">Detections</option>
           <option value="separation">Separation</option>
           <option value="date">Date</option>
         </select>
