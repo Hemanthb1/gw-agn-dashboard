@@ -26,7 +26,6 @@ function epToResult(ep: EPAlert): CrossmatchResult {
     gw_event: {
       id: ep.id,
       graceid: ep.graceid,
-      classification: {},
       distanceMean: 0,
       distanceStd: 0,
       skymap_url: "",
