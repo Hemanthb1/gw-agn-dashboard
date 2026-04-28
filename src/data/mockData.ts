@@ -13,7 +13,6 @@ export const mockGWEvents: GWEvent[] = [
   {
     id: "2",
     graceid: "S231130ai",
-    far: 1.2e-8,
     classification: { BNS: 0.89, NSBH: 0.08, Terrestrial: 0.03 },
     distanceMean: 180,
     distanceStd: 40,
