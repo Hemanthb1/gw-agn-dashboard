@@ -30,7 +30,6 @@ export default function Toast({ event }: ToastProps) {
       borderRadius: 10,
       padding: "12px 16px",
       width: 280,
-      zIndex: 100,
     }}>
       <div style={{
         fontSize: 13,
