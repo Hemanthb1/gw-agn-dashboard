@@ -51,7 +51,7 @@ export default function App() {
   const [results, setResults] = useState<CrossmatchResult[]>([])
   const [filtered, setFiltered] = useState<CrossmatchResult[]>([])
   const [loading, setLoading] = useState(true)
-  const [skymapMeta, setSkymapMeta] = useState<Record<string, any>>({})
+  const skymapMetaRef = { current: {} as Record<string, any> }
   const [config, setConfig] = useState<WatcherConfig>(defaultConfig)
   const [filters, setFilters] = useState<FilterState>({
     severity: "all",
@@ -83,7 +83,7 @@ export default function App() {
           }
         }
       })
-      setSkymapMeta(meta)
+      skymapMetaRef.current = meta
       
 
       // Parse candidates with metadata
