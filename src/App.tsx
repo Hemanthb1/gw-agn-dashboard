@@ -84,8 +84,7 @@ export default function App() {
         }
       })
       setSkymapMeta(meta)
-      console.log("Meta keys:", Object.keys(meta))
-      console.log("S251031cq meta:", meta["S251031cq"])
+      
 
       // Parse candidates with metadata
       const rows = parseCSV(candidatesText)
