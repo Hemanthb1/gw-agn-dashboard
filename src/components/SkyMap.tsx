@@ -95,7 +95,7 @@ export default function SkyMap({ results }: SkyMapProps) {
             tick={{ fill: "#888", fontSize: 11 }}
           />
           <ReferenceLine y={0} stroke="#333" strokeDasharray="4 4" />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip />} isAnimationActive={false}/>
           <Scatter data={data} shape={<CustomDot />} />
         </ScatterChart>
       </ResponsiveContainer>

@@ -21,9 +21,10 @@ export default function Toast({ event }: ToastProps) {
 
   return (
     <div style={{
-      position: "absolute",
+      position: "fixed",
       top: 24,
       right: 24,
+      zIndex: 1000,
       background: isCritical ? "#FCEBEB" : "#EAF3DE",
       border: `0.5px solid ${isCritical ? "#E24B4A" : "#1D9E75"}`,
       borderRadius: 10,

@@ -12,7 +12,7 @@ interface SettingsPanelProps {
   onSave: (config: WatcherConfig) => void
 }
 
-const availableCatalogs = ["ALeRCE", "ALeRCE/Milliquas", "Einstein Probe", "Milliquas", "SDSS"]
+const availableCatalogs = ["ALeRCE", "ALeRCE/Milliquas", "Milliquas", "SDSS"]
 
 export default function SettingsPanel({ config, onSave }: SettingsPanelProps) {
   const [local, setLocal] = useState<WatcherConfig>(config)

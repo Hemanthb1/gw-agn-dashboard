@@ -55,7 +55,8 @@ const severityBg: Record<string, string> = {
 
 export default function DetailView({ result, onBack, allResults = [], onSelect }: DetailViewProps) {
   const { gw_event, agn_candidate } = result
-  const far_per_year = (gw_event.far * 3.15e7).toFixed(2)
+ 
+
 
   const siblings = allResults.filter(
     r => r.gw_event.graceid === result.gw_event.graceid && r.id !== result.id
@@ -138,21 +139,11 @@ export default function DetailView({ result, onBack, allResults = [], onSelect }
 
       <Section title="GW event">
         <Row label="GraceID" value={gw_event.graceid} />
-        <Row label="Distance" value={`${gw_event.distanceMean.toFixed(0)} ± ${gw_event.distanceStd.toFixed(0)} Mpc`} />
-        <Row label="FAR" value={`${far_per_year} per year`} />
-        {gw_event.classification.BBH !== undefined && (
-          <Row label="BBH probability" value={`${((gw_event.classification.BBH ?? 0) * 100).toFixed(0)}%`} />
-        )}
-        {gw_event.classification.BNS !== undefined && (
-          <Row label="BNS probability" value={`${((gw_event.classification.BNS ?? 0) * 100).toFixed(0)}%`} />
-        )}
-        {gw_event.classification.NSBH !== undefined && (
-          <Row label="NSBH probability" value={`${((gw_event.classification.NSBH ?? 0) * 100).toFixed(0)}%`} />
-        )}
-        {gw_event.classification.Terrestrial !== undefined && (
-          <Row label="Terrestrial probability" value={`${((gw_event.classification.Terrestrial ?? 0) * 100).toFixed(0)}%`} />
-        )}
-      </Section>
+        <Row label="Distance" value={gw_event.distanceMean > 0 ? `${gw_event.distanceMean.toFixed(0)} ± ${gw_event.distanceStd.toFixed(0)} Mpc` : "—"} />
+        <Row label="Redshift range" value={gw_event.z_min && gw_event.z_max ? `${gw_event.z_min.toFixed(3)} – ${gw_event.z_max.toFixed(3)}` : "—"} />
+      
+      
+    </Section>
 
       <Section title="AGN candidate">
         <Row label="ZTF ID" value={agn_candidate.name} />

@@ -193,7 +193,7 @@ export default function SkymapOverlay({ results }: SkymapOverlayProps) {
             tickFormatter={v => Math.round(v).toString()}
           />
           <ZAxis range={[4, 4]} />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip />} isAnimationActive={false} />
           <Scatter
             name="Skymap"
             data={filteredPixels}

@@ -44,6 +44,25 @@ export default function AlertTable({ results, onSelect }: AlertTableProps) {
 
   return (
     <div>
+      <div style={{
+        fontSize: 12,
+        color: "gray",
+        marginBottom: 10,
+        padding: "8px 12px",
+        background: "var(--color-background-secondary, #f5f5f5)",
+        borderRadius: 6,
+        lineHeight: 1.8,
+      }}>
+        <strong>Severity score</strong> = AGN probability (40%) + Detection count (30%) + Timing (30%)
+        <br />
+        <span style={{ color: "#791F1F" }}>■ Critical</span> ≥ 0.8 &nbsp;
+        <span style={{ color: "#712B13" }}>■ High</span> ≥ 0.6 &nbsp;
+        <span style={{ color: "#633806" }}>■ Medium</span> ≥ 0.4 &nbsp;
+        <span style={{ color: "#27500A" }}>■ Low</span> &lt; 0.4
+        <br />
+        Timing: detections closer to GW trigger score higher. Detections: more ZTF detections score higher (max at 20+).
+      </div>
+
       <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
         <input
           type="checkbox"
@@ -69,23 +88,23 @@ export default function AlertTable({ results, onSelect }: AlertTableProps) {
           </tr>
         </thead>
         <tbody>
-        {filtered.map(r => (
-  <tr
-    key={r.id}
-    onClick={() => onSelect?.(r)}
-    style={{
-      borderBottom: "0.5px solid #eee",
-      cursor: onSelect ? "pointer" : "default",
-    }}
-  >
-    <td style={{ padding: "8px 12px" }}>{r.gw_event.graceid}</td>
-    <td style={{ padding: "8px 12px" }}>{r.agn_candidate.name}</td>
-    <td style={{ padding: "8px 12px" }}>{(r.probability_overlap * 100).toFixed(0)}%</td>
-    <td style={{ padding: "8px 12px" }}>{r.angular_separation.toFixed(1)}"</td>
-    <td style={{ padding: "8px 12px" }}><SeverityBadge severity={r.severity} /></td>
-    <td style={{ padding: "8px 12px" }}>{r.agn_candidate.ndet ?? "—"}</td>
-    </tr>
-      ))}
+          {filtered.map(r => (
+            <tr
+              key={r.id}
+              onClick={() => onSelect?.(r)}
+              style={{
+                borderBottom: "0.5px solid #eee",
+                cursor: onSelect ? "pointer" : "default",
+              }}
+            >
+              <td style={{ padding: "8px 12px" }}>{r.gw_event.graceid}</td>
+              <td style={{ padding: "8px 12px" }}>{r.agn_candidate.name}</td>
+              <td style={{ padding: "8px 12px" }}>{(r.probability_overlap * 100).toFixed(0)}%</td>
+              <td style={{ padding: "8px 12px" }}>{r.angular_separation.toFixed(1)}"</td>
+              <td style={{ padding: "8px 12px" }}><SeverityBadge severity={r.severity} /></td>
+              <td style={{ padding: "8px 12px" }}>{r.agn_candidate.ndet ?? "—"}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

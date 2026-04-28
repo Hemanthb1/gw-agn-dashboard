@@ -3,18 +3,13 @@ export type Severity = "low" | "medium" | "high" | "critical"
 export interface GWEvent {
   id: string
   graceid: string
-  far: number
-  classification: {
-    BBH?: number
-    BNS?: number
-    NSBH?: number
-    Terrestrial?: number
-  }
   distanceMean: number
   distanceStd: number
+  z_min?: number
+  z_max?: number
   skymap_url: string
-  created_at: string
   mjd_obs?: number
+  created_at: string
 }
 
 export interface AGNCandidate {
