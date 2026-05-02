@@ -7,13 +7,13 @@ A real-time dashboard for gravitational wave follow-up, crossmatching LIGO/Virgo
 ## Screenshots
 
 ### Main Dashboard
-![Main Dashboard](public/dashboard-main.png)
+![Main Dashboard](public/Dashboard-main.png)
 
 ### GW Skymap with Probability Contours
-![Skymap](public/dashboard-skymap.png)
+![Skymap](public/Dashboard-skymap.png)
 
 ### Candidate Detail View with ZTF Light Curve
-![Detail View](public/dashboard-detail.png)
+![Detail View](public/Dashboard-detail.png)
 
 ## What it does
 
