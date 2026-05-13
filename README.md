@@ -1,6 +1,6 @@
 # GW-AGN Watcher Dashboard
 
-A real-time dashboard for gravitational wave follow-up, crossmatching LIGO/Virgo GW events with AGN candidates from ZTF/ALeRCE.
+A prototype for real-time dashboard for gravitational wave follow-up, crossmatching LIGO/Virgo GW events with AGN candidates from ZTF/ALeRCE.
 
 **Live demo:** https://gw-agn-dashboard.vercel.app
 
@@ -27,7 +27,7 @@ When LIGO detects a gravitational wave event, one of the leading candidate sourc
 
 ## Features
 
-- Live alert dashboard with severity ranking based on AGN probability, detection count, and timing
+- Live alert dashboard (mock stream for now) with severity ranking based on AGN probability, detection count, and timing
 - ZTF g-band and r-band light curves with GW trigger time marker
 - GW skymap probability contour overlay with event selector
 - Filter by severity, detection count, and separation
