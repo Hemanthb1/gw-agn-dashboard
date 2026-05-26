@@ -167,7 +167,7 @@ export default function App() {
 
   return (
     <div style={{ padding: "24px", position: "relative" }}>
-      <Toast event={latest} />
+      {/*<Toast event={latest} />*/}
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
         <h1 style={{ margin: 0 }}>GW-AGN Watcher</h1>
@@ -194,7 +194,7 @@ export default function App() {
       )}
 
       <StatsSummary results={results} />
-      <LiveFeed events={liveEvents} connected={connected} />
+      {/*<LiveFeed events={liveEvents} connected={connected} />*/}
       <SkyMap results={filtered} />
       <SkymapOverlay results={results} />
       <FilterControls onFilterChange={setFilters} />
