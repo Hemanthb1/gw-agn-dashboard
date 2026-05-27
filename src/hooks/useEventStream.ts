@@ -56,7 +56,7 @@ export function useEventStream() {
     epAlerts: [],
   })
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const mockIndexRef = useRef(0)
+  
   const knownIdsRef = useRef<Set<string>>(new Set())
 
   useEffect(() => {
