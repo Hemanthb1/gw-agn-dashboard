@@ -45,7 +45,7 @@ useEffect(() => {
           width: 8,
           height: 8,
           borderRadius: "50%",
-          background: connected ? "#1D9E75" : "#E24B4A",
+          background: "#E24B4A",
         }} />
         <span style={{ color: "white", fontSize: 14, fontWeight: 500 }}>
           Live event stream
