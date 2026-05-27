@@ -3,7 +3,6 @@ import type { CrossmatchResult } from "../types/events"
 
 interface LiveFeedProps {
   events: CrossmatchResult[]
-  connected: boolean
 }
 
 const severityColor: Record<string, string> = {
@@ -20,14 +19,15 @@ const severityBg: Record<string, string> = {
   critical: "#FCEBEB",
 }
 
-export default function LiveFeed({ events, connected }: LiveFeedProps) {
+export default function LiveFeed({ events }: LiveFeedProps) {
   const feedRef = useRef<HTMLDivElement>(null)
 
-useEffect(() => {
-  if (feedRef.current) {
-    feedRef.current.scrollTop = feedRef.current.scrollHeight
-  }
-}, [events])
+  useEffect(() => {
+    if (feedRef.current) {
+      feedRef.current.scrollTop = feedRef.current.scrollHeight
+    }
+  }, [events])
+
   return (
     <div style={{
       background: "#0a0a1a",
@@ -50,21 +50,20 @@ useEffect(() => {
         <span style={{ color: "white", fontSize: 14, fontWeight: 500 }}>
           Live event stream
         </span>
-        <span style={{ color: "#888", fontSize: 12, marginLeft: 4 }}>
+        <span style={{ color: "#E24B4A", fontSize: 12, marginLeft: 4 }}>
           disconnected
         </span>
       </div>
-
       <div
-      ref={feedRef}
-      style={{
-      height: 240,
-      overflowY: "auto",
-      display: "flex",
-      flexDirection: "column",
-      gap: 6,
-      }}
->
+        ref={feedRef}
+        style={{
+          height: 240,
+          overflowY: "auto",
+          display: "flex",
+          flexDirection: "column",
+          gap: 6,
+        }}
+      >
         {events.length === 0 && (
           <div style={{ color: "#888", fontSize: 13, padding: "8px 0" }}>
             Waiting for events...
@@ -98,20 +97,20 @@ useEffect(() => {
               {event.gw_event.graceid}
             </span>
             <span style={{ color: "#888" }}>
-            {event.agn_candidate.name}
+              {event.agn_candidate.name}
             </span>
             {event.agn_candidate.catalog === "Einstein Probe" && (
-            <span style={{
-             background: "#FAEEDA",
-            color: "#633806",
-            padding: "2px 6px",
-            borderRadius: 4,
-            fontSize: 11,
-            fontWeight: 500,
-            flexShrink: 0,
-            }}>
+              <span style={{
+                background: "#FAEEDA",
+                color: "#633806",
+                padding: "2px 6px",
+                borderRadius: 4,
+                fontSize: 11,
+                fontWeight: 500,
+                flexShrink: 0,
+              }}>
                 EP
-            </span>
+              </span>
             )}
             <span style={{ color: "#1D9E75", marginLeft: "auto", flexShrink: 0 }}>
               {(event.probability_overlap * 100).toFixed(0)}%
