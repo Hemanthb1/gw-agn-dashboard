@@ -31,7 +31,6 @@ When LIGO detects a gravitational wave event, one of the leading candidate sourc
 - ZTF g-band and r-band light curves with GW trigger time marker
 - GW skymap probability contour overlay with event selector
 - Filter by severity, detection count, and separation
-- Real-time Einstein Probe and Fermi GBM alerts via GCN Kafka
 - Clickable detail view with GW event metadata from GraceDB
 - Sibling candidate navigation within same GW event
 - Settings panel for pipeline configuration
