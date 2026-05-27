@@ -51,7 +51,7 @@ useEffect(() => {
           Live event stream
         </span>
         <span style={{ color: "#888", fontSize: 12, marginLeft: 4 }}>
-          {connected ? "connected · new event every 3s" : "disconnected"}
+          disconnected
         </span>
       </div>
 
