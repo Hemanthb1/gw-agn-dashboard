@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import type { CrossmatchResult } from "../types/events"
-import { mockCrossmatches } from "../data/mockData"
+
 
 interface EPAlert {
   id: string
@@ -87,23 +87,7 @@ export function useEventStream() {
     const epInterval = setInterval(pollEP, 30000)
 
     // Mock stream for demo purposes when no real alerts
-    intervalRef.current = setInterval(() => {
-      const next = mockCrossmatches[mockIndexRef.current % mockCrossmatches.length]
-      const newEvent: CrossmatchResult = {
-        ...next,
-        id: `live-${Date.now()}`,
-        created_at: new Date().toISOString(),
-      }
-      setState(s => {
-        if (s.epAlerts.length > 0) return s
-        return {
-          ...s,
-          latest: newEvent,
-          events: [newEvent, ...s.events].slice(0, 20),
-        }
-      })
-      mockIndexRef.current += 1
-    }, 3000)
+    intervalRef.current = null
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
