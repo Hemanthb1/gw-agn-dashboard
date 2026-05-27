@@ -4,7 +4,10 @@ import StatsSummary from "./components/StatsSummary"
 import SkyMap from "./components/SkyMap"
 import FilterControls from "./components/FilterControls"
 import SettingsPanel from "./components/SettingsPanel"
+import LiveFeed from "./components/LiveFeed"
+import Toast from "./components/Toast"
 import DetailView from "./components/DetailView"
+import { useEventStream } from "./hooks/useEventStream"
 import type { CrossmatchResult } from "./types/events"
 import type { FilterState } from "./components/FilterControls"
 import type { WatcherConfig } from "./components/SettingsPanel"
@@ -58,6 +61,7 @@ export default function App() {
   })
   const [showSettings, setShowSettings] = useState(false)
   const [selected, setSelected] = useState<CrossmatchResult | null>(null)
+  const { events: liveEvents, latest, connected } = useEventStream()
 
   useEffect(() => {
     Promise.all([
@@ -189,7 +193,7 @@ export default function App() {
       )}
 
       <StatsSummary results={results} />
-      {/*<LiveFeed events={liveEvents} connected={connected} />*/}
+      <LiveFeed events={liveEvents} connected={connected} />
       <SkyMap results={filtered} />
       <SkymapOverlay results={results} />
       <FilterControls onFilterChange={setFilters} />
