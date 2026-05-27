@@ -5,9 +5,7 @@ import SkyMap from "./components/SkyMap"
 import FilterControls from "./components/FilterControls"
 import SettingsPanel from "./components/SettingsPanel"
 import LiveFeed from "./components/LiveFeed"
-import Toast from "./components/Toast"
 import DetailView from "./components/DetailView"
-import { useEventStream } from "./hooks/useEventStream"
 import type { CrossmatchResult } from "./types/events"
 import type { FilterState } from "./components/FilterControls"
 import type { WatcherConfig } from "./components/SettingsPanel"
@@ -47,10 +45,13 @@ function parseCSV(text: string) {
   })
 }
 
+type Tab = "archive" | "live"
+
 export default function App() {
   const [results, setResults] = useState<CrossmatchResult[]>([])
   const [filtered, setFiltered] = useState<CrossmatchResult[]>([])
   const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState<Tab>("archive")
   const skymapMetaRef = { current: {} as Record<string, any> }
   const [config, setConfig] = useState<WatcherConfig>(defaultConfig)
   const [filters, setFilters] = useState<FilterState>({
@@ -61,14 +62,12 @@ export default function App() {
   })
   const [showSettings, setShowSettings] = useState(false)
   const [selected, setSelected] = useState<CrossmatchResult | null>(null)
-  const { events: liveEvents, latest, connected } = useEventStream()
 
   useEffect(() => {
     Promise.all([
       fetch("/final_candidates.csv").then(r => r.text()),
       fetch("/skymaps.csv").then(r => r.text())
     ]).then(([candidatesText, skymapsText]) => {
-      // Parse skymap metadata
       const skymapRows = parseCSV(skymapsText)
       const meta: Record<string, any> = {}
       skymapRows.forEach((row: any) => {
@@ -83,9 +82,7 @@ export default function App() {
         }
       })
       skymapMetaRef.current = meta
-      
 
-      // Parse candidates with metadata
       const rows = parseCSV(candidatesText)
       const results = rows.map((row: any) => {
         const graceid = row.event_id ?? "unknown"
@@ -101,7 +98,6 @@ export default function App() {
         const severity = score >= 0.8 ? "critical"
           : score >= 0.6 ? "high"
           : score >= 0.4 ? "medium" : "low"
-
         return {
           id: crypto.randomUUID(),
           gw_event: {
@@ -166,8 +162,8 @@ export default function App() {
 
   return (
     <div style={{ padding: "24px", position: "relative" }}>
-      <Toast event={latest} />
 
+      {/* ── Header ── */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
         <h1 style={{ margin: 0 }}>GW-AGN Watcher</h1>
         <button
@@ -192,12 +188,46 @@ export default function App() {
         />
       )}
 
-      <StatsSummary results={results} />
-      <LiveFeed events={liveEvents} connected={connected} />
-      <SkyMap results={filtered} />
-      <SkymapOverlay results={results} />
-      <FilterControls onFilterChange={setFilters} />
-      <AlertTable results={filtered} onSelect={setSelected} />
+      {/* ── Tab bar ── */}
+      <div style={{ display: "flex", gap: 4, marginBottom: 20, borderBottom: "1px solid #e0e0e0" }}>
+        {(["archive", "live"] as Tab[]).map(tab => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            style={{
+              padding: "8px 20px",
+              border: "none",
+              borderBottom: activeTab === tab ? "2px solid #185FA5" : "2px solid transparent",
+              background: "none",
+              fontSize: 14,
+              fontWeight: activeTab === tab ? 600 : 400,
+              color: activeTab === tab ? "#185FA5" : "#666",
+              cursor: "pointer",
+              textTransform: "capitalize",
+              transition: "all 0.15s",
+            }}
+          >
+            {tab === "live" ? "🔴 Live Stream" : "Archive"}
+          </button>
+        ))}
+      </div>
+
+      {/* ── Archive tab ── */}
+      {activeTab === "archive" && (
+        <>
+          <StatsSummary results={results} />
+          <SkyMap results={filtered} />
+          <SkymapOverlay results={results} />
+          <FilterControls onFilterChange={setFilters} />
+          <AlertTable results={filtered} onSelect={setSelected} />
+        </>
+      )}
+
+      {/* ── Live Stream tab ── */}
+      {activeTab === "live" && (
+        <LiveFeed events={[]} />
+      )}
+
     </div>
   )
 }
