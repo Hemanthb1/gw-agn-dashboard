@@ -166,7 +166,7 @@ export default function App() {
 
   return (
     <div style={{ padding: "24px", position: "relative" }}>
-      {/*<Toast event={latest} />*/}
+      <Toast event={latest} />
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
         <h1 style={{ margin: 0 }}>GW-AGN Watcher</h1>
