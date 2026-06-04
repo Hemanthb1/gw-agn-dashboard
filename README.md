@@ -42,7 +42,37 @@ This tool automates that workflow end-to-end.
 ![Detail View](public/Dashboard-detail.png)
 
 
-## Run locally
+## Architecture
+
+```
+GW Alert (GraceDB / GCN Kafka)
+        ↓
+ligo.skymap → skymap download & parsing
+        ↓
+ALeRCE broker → ZTF transients within localization
+        ↓
+Milliquas catalog → AGN crossmatch
+        ↓
+FastAPI backend → /events, /run_pipeline, /pipeline_status
+        ↓
+React + TypeScript dashboard → interactive visualization
+```
+
+---
+
+## Tech Stack
+
+| Layer | Tools |
+|---|---|
+| Pipeline | Python, `ligo.skymap`, `astropy`, ALeRCE API, Milliquas catalog |
+| Alerts | GCN Kafka (`gcn-kafka`), Einstein Probe WXT, Fermi GBM |
+| Backend | FastAPI |
+| Frontend | React, TypeScript, Recharts, Vite |
+| Deployment | Vercel (frontend) |
+
+---
+
+## Quick Start
 
 ```bash
 # Clone the repo
@@ -56,12 +86,21 @@ npm install
 npm run dev
 ```
 
-The dashboard reads from `public/final_candidates.csv` and `public/skymaps.csv` — replace with outputs from the [gw_agn_watcher](https://github.com/Hemanthb1/GW_AGN_watcher) pipeline.
+The dashboard reads from `public/final_candidates.csv` and `public/skymaps.csv`.  
+Replace these with outputs from the [GW_AGN_watcher](https://github.com/Hemanthb1/GW_AGN_watcher) pipeline.
 
-## Pipeline
+---
 
-The Python pipeline lives at [github.com/Hemanthb1/GW_AGN_watcher](https://github.com/Hemanthb1/GW_AGN_watcher).
+## Related
+
+- 🐍 **Python pipeline:** [GW_AGN_watcher](https://github.com/Hemanthb1/GW_AGN_watcher)
+- 🌐 **NASA GCN contribution:** [PR #3579](https://github.com/nasa-gcn/gcn.nasa.gov/pull/3579)
+
+---
 
 ## Author
 
-Hemanth Kumar — hemanth.bommireddy195@gmail.com
+**Hemanth Bommireddy**  
+PhD candidate, Universidad de Chile  
+📧 hemanth.bommireddy195@gmail.com  
+🔗 [ORCID](https://orcid.org/0009-0007-4271-6444) · [InspireHEP](https://inspirehep.net/authors/2902490)
