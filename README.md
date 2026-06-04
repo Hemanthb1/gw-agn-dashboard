@@ -42,20 +42,20 @@ This tool automates that workflow end-to-end.
 ![Detail View](public/Dashboard-detail.png)
 
 
-## Architecture
+This project has two components:
 
 ```
-GW Alert (GraceDB / GCN Kafka)
+[Backend: Python pipeline on Google Colab]
+        |
+        | Outputs: final_candidates.csv, skymaps.csv
+        | Auto-pushed to this repo via GitHub API
         ↓
-ligo.skymap → skymap download & parsing
+[Frontend: React + TypeScript on Vercel]
+        |
+        | Reads CSVs from public/
+        | Renders interactive dashboard
         ↓
-ALeRCE broker → ZTF transients within localization
-        ↓
-Milliquas catalog → AGN crossmatch
-        ↓
-FastAPI backend → /events, /run_pipeline, /pipeline_status
-        ↓
-React + TypeScript dashboard → interactive visualization
+[Live at gw-agn-dashboard.vercel.app]
 ```
 
 ---
@@ -65,10 +65,10 @@ React + TypeScript dashboard → interactive visualization
 | Layer | Tools |
 |---|---|
 | Pipeline | Python, `ligo.skymap`, `astropy`, ALeRCE API, Milliquas catalog |
-| Alerts | GCN Kafka (`gcn-kafka`), Einstein Probe WXT, Fermi GBM |
-| Backend | FastAPI |
+| Alerts | GCN Kafka (`gcn-kafka`)|
+| Backend | Colab |
 | Frontend | React, TypeScript, Recharts, Vite |
-| Deployment | Vercel (frontend) |
+| Deployment | Vercel (frontend), GitHub API (automated CSV push) |
 
 ---
 
@@ -90,6 +90,21 @@ The dashboard reads from `public/final_candidates.csv` and `public/skymaps.csv`.
 Replace these with outputs from the [GW_AGN_watcher](https://github.com/Hemanthb1/GW_AGN_watcher) pipeline.
 
 ---
+## Running the Backend
+
+The backend pipeline runs on Google Colab or locally. It uses the [GW_AGN_watcher](https://github.com/Hemanthb1/GW_AGN_watcher) Python package.
+
+### Option 1 — Google Colab (recommended)
+
+1. Open the pipeline notebook: [`example.ipynb`](https://github.com/Hemanthb1/GW_AGN_watcher/blob/main/example.ipynb)
+2. Set your credentials in the Colab secrets panel:
+   ```
+   GITHUB_TOKEN=your_github_token
+   GRACEDB_TOKEN=your_gracedb_token
+   ALERCE_API_KEY=your_alerce_key   # optional
+   ```
+3. Run all cells — outputs are automatically pushed to `public/` in this repo
+
 
 ## Related
 
