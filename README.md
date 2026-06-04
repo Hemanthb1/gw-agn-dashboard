@@ -1,7 +1,33 @@
 # GW-AGN Watcher Dashboard
 
-A prototype for real-time dashboard for gravitational wave follow-up, crossmatching LIGO/Virgo GW events with AGN candidates from ZTF/ALeRCE.
+> Real-time dashboard for gravitational wave follow-up — crossmatching LIGO/Virgo/KAGRA events with AGN candidates from ZTF/ALeRCE.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-gw--agn--dashboard.vercel.app-blue)](https://gw-agn-dashboard.vercel.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-90%25-blue)](https://www.typescriptlang.org/)
+[![NASA GCN PR](https://img.shields.io/badge/NASA%20GCN-PR%20%233579-brightgreen)](https://github.com/nasa-gcn/gcn.nasa.gov/pull/3579)
+
+---
+
+## Science Motivation
+
+When LIGO/Virgo/KAGRA detects a gravitational wave event, one leading candidate source is a merger involving an AGN (Active Galactic Nucleus) — a supermassive black hole system that could host merging compact objects producing both gravitational wave and electromagnetic emission. Identifying these counterparts requires crossmatching GW sky localizations with real-time transient alert streams within hours of the GW trigger.
+
+This tool automates that workflow end-to-end.
+
+---
+
+## Features
+
+- 📡 **GCN Kafka consumer** for Einstein Probe WXT and Fermi GBM alerts
+- 🗺️ **GW skymap overlay** with LIGO probability contours and event selector
+- 🔭 **ZTF light curves** (g and r band) with GW trigger time marker
+- 🧬 **AGN candidate ranking** by overlap probability, redshift, and light curve behavior
+- 🔍 **Filtering** by severity, detection count, and angular separation
+- 📋 **GraceDB metadata** integration with sibling candidate navigation
+- ⚙️ **Pipeline configuration** panel
+
+---
 **Live demo:** https://gw-agn-dashboard.vercel.app
 
 ## Screenshots
@@ -15,37 +41,6 @@ A prototype for real-time dashboard for gravitational wave follow-up, crossmatch
 ### Candidate Detail View with ZTF Light Curve
 ![Detail View](public/Dashboard-detail.png)
 
-## What it does
-
-When LIGO detects a gravitational wave event, one of the leading candidate sources is an AGN (Active Galactic Nucleus) — a supermassive black hole system that could contain merging black holes that could emit in both GW and electromagnetic emission. This tool automatically:
-
-1. Downloads GW skymaps from GraceDB
-2. Queries the ALeRCE broker for ZTF transients within the GW localization region
-3. Crossmatches candidates against the Milliquas AGN catalog
-4. Ranks candidates by overlap probability, redshift, and light curve behavior
-5. Displays results in an interactive dashboard with live ZTF light curves
-
-## Features
-
-- Live alert dashboard (mock stream for now) with severity ranking based on AGN probability, detection count, and timing
-- ZTF g-band and r-band light curves with GW trigger time marker
-- GW skymap probability contour overlay with event selector
-- Filter by severity, detection count, and separation
-- Clickable detail view with GW event metadata from GraceDB
-- Sibling candidate navigation within same GW event
-- Settings panel for pipeline configuration
-
-## Tech stack
-
-- **Pipeline:** Python — `ligo.skymap`, `astropy`, ALeRCE broker, Milliquas catalog
-- **Backend:** FastAPI REST API with `/events`, `/run_pipeline`, `/pipeline_status` endpoints
-- **Frontend:** React + TypeScript, Recharts, Vite
-- **Alerts:** GCN Kafka consumer for Einstein Probe WXT + Fermi GBM
-- **Deployment:** Vercel (frontend) + automated GitHub push from Colab
-
-## GCN Contribution
-
-This project led to a contribution to the GCN codebase — [PR #3579](https://github.com/nasa-gcn/gcn.nasa.gov/pull/3579) adding navigation links from the event circular view to individual circular pages.
 
 ## Run locally
 
