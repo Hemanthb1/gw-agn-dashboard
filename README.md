@@ -19,7 +19,6 @@ This tool automates that workflow end-to-end.
 
 ## Features
 
-- 📡 **GCN Kafka consumer** for Einstein Probe WXT and Fermi GBM alerts
 - 🗺️ **GW skymap overlay** with LIGO probability contours and event selector
 - 🔭 **ZTF light curves** (g and r band) with GW trigger time marker
 - 🧬 **AGN candidate ranking** by overlap probability, redshift, and light curve behavior
