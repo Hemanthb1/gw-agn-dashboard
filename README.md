@@ -107,8 +107,8 @@ The backend pipeline runs on Google Colab or locally. It uses the [GW_AGN_watche
 
 ## Related
 
-- 🐍 **Python pipeline:** [GW_AGN_watcher](https://github.com/Hemanthb1/GW_AGN_watcher)
-- 🌐 **NASA GCN contribution:** [PR #3579](https://github.com/nasa-gcn/gcn.nasa.gov/pull/3579)
+-  **Python pipeline:** [GW_AGN_watcher](https://github.com/Hemanthb1/GW_AGN_watcher)
+-  **NASA GCN contribution:** [PR #3579](https://github.com/nasa-gcn/gcn.nasa.gov/pull/3579)
 
 ---
 
@@ -116,5 +116,5 @@ The backend pipeline runs on Google Colab or locally. It uses the [GW_AGN_watche
 
 **Hemanth Bommireddy**  
 PhD candidate, Universidad de Chile  
-📧 hemanth.bommireddy195@gmail.com  
+hemanth.bommireddy195@gmail.com  
 🔗 [ORCID](https://orcid.org/0009-0007-4271-6444) · [InspireHEP](https://inspirehep.net/authors/2902490)
