@@ -95,7 +95,7 @@ The backend pipeline runs on Google Colab or locally. It uses the [GW_AGN_watche
 
 ### Option 1 — Google Colab (recommended)
 
-1. Open the pipeline notebook: [`example.ipynb`](https://github.com/Hemanthb1/GW_AGN_watcher/blob/main/example.ipynb)
+1. Open the pipeline notebook: [`watcher_dashboard_example.ipynb`](https://github.com/Hemanthb1/GW_AGN_watcher/blob/main/watcher_dashboard_example.ipynb)
 2. Set your credentials in the Colab secrets panel:
    ```
    GITHUB_TOKEN=your_github_token
